@@ -52,7 +52,7 @@ class Reproduction : public Condition {
 public:
   bool Test(const AgentContext& context) override {
     // todo: implement the reproduction condition
-    if (context.aliveNeighbors == 2 || context.aliveNeighbors == 3) {
+    if (context.aliveNeighbors == 2) {
       return true;
     }
 else
@@ -178,7 +178,10 @@ int JohnConway::CountNeighbors(World& world, Point2D point) {
       }
     }
   }
-  count--;
+ 
+    count--;
+ 
+ 
   //throw std::logic_error("CountNeighbors not implemented yet");
   return count;
   // end solution
