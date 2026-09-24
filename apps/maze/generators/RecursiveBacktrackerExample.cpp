@@ -50,15 +50,20 @@ bool RecursiveBacktrackerExample::Step(World* w) {
   //     LEFT  -> w->SetWest(current, false)
   //   return true while there is still work (stack not empty after the move)
   // begin solution
+  Color32 visColor = {0, 0.5, 0};
+  w->SetNodeColor(stack.back(), visColor);
+  uint8_t rngcounter = 0;
 	if (stack.empty())
 	{
 		return false;
 	}
     std::vector<Point2D> visitables;
-    visitables = getVisitables(w, stack.front());
+    visitables = getVisitables(w, stack.back());
+    Point2D temp = stack.back();
 	if (visitables.size() == 0) 
 	{
       stack.pop_back();
+
 	}
 	else if (visitables.size() == 1)
 	{
@@ -67,15 +72,31 @@ bool RecursiveBacktrackerExample::Step(World* w) {
 	else
 	{
         int next;
-        next = SeededRandom::next() % visitables.size();
+        next = SeededRandom::next(); 
+        next = next % visitables.size();
         stack.push_back(visitables[next]);
+        rngcounter++;
+        SeededRandom::setIndex(rngcounter);
+        if (rngcounter == 100)
+        {
+          rngcounter = 0;
+        }
+       
 	}
-        w->SetNorth(stack.front(), false);
-        w->SetEast(stack.front(), false);
-        w->SetSouth(stack.front(), false);
-        w->SetWest(stack.front(), false);
+        if (temp.y == stack.back().y+1) {
+          w->SetNorth(stack.back(), false);
+        } else if (temp.x == stack.back().x + 1) {
+          w->SetEast(stack.back(), false);
+        } else if (temp.y == stack.back().y - 1) {
+          w->SetSouth(stack.back(), false);
+        } else if (temp.x == stack.back().x - 1) {
+          w->SetWest(stack.back(), false);
+        }
   // end solution
-  return true;
+        if (!stack.empty()) {
+          return true;
+        }
+  
 }
 
 std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const Point2D& point) {
@@ -88,28 +109,41 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
   std::vector<Point2D> unvisited;
   Point2D temp = point;
   temp.y -= 1;
-  w->GetNode(temp);
-  //if (w->GetNodeColor(temp) == w->GetNodeColor(point))
+  Color32 visColor = {0, 0.5, 0};
+  Color32 compColor;
+  
+  if (0 <= temp.x && temp.x < w->GetWidth() && 0 <= temp.y && temp.y < w->GetHeight())
   {
-    unvisited.push_back(temp);
+    compColor = w->GetNodeColor(temp);
+    if (visColor.g != compColor.g) {
+      unvisited.push_back(temp);
+    }
+    
   }
-  temp.y += 1;
+  temp.y = point.y;
   temp.x += 1;
-  if (w->GetNodeColor(temp).g == w->GetNodeColor(point).g) 
-  {
-    unvisited.push_back(temp);
+  
+  if (0 <= temp.x && temp.x < w->GetWidth() && 0 <= temp.y && temp.y < w->GetHeight()) {
+    compColor = w->GetNodeColor(temp);
+    if (visColor.g != compColor.g) {
+      unvisited.push_back(temp);
+    }
   }
-  temp.x -= 1;
+  temp.x = point.x;
   temp.y += 1;
-  if (w->GetNodeColor(temp).g == w->GetNodeColor(point).g) 
-  {
-    unvisited.push_back(temp);
+  if (0 <= temp.x && temp.x < w->GetWidth() && 0 <= temp.y && temp.y < w->GetHeight()) {
+    compColor = w->GetNodeColor(temp);
+    if (visColor.g != compColor.g) {
+      unvisited.push_back(temp);
+    }
   }
-  temp.y -= 1;
+  temp.y = point.y;
   temp.x -= 1;
-  if (w->GetNodeColor(temp).g == w->GetNodeColor(point).g) 
-  {
-    unvisited.push_back(temp);
+  if (0 <= temp.x && temp.x < w->GetWidth() && 0 <= temp.y && temp.y < w->GetHeight()) {
+    compColor = w->GetNodeColor(temp);
+    if (visColor.g != compColor.g) {
+      unvisited.push_back(temp);
+    }
   }
   // end solution
   return unvisited;

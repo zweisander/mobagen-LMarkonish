@@ -19,11 +19,6 @@ public:
     // every time this is called, it should use the current index for the return then increment the index by 1 and wrap around to 0 if reaches the end of the array.
     // This a simple random number generator, we will use more robust random number generation later.
     static uint8_t value = randomNumbers[index];
-    index++;
-    if (index == 100)
-    {
-      index = 0;
-    }
     return value;
   }
 
