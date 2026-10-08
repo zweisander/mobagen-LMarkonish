@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 Point2D Cat::Move(CatWorld* world) {
-  auto rand = Random::Range(0, 5);
+  /* auto rand = Random::Range(0, 5);
   auto pos = world->getCat();
   switch (rand) {
     case 0:
@@ -19,6 +19,8 @@ Point2D Cat::Move(CatWorld* world) {
     case 5:
       return CatWorld::SE(pos);
     default:
-      throw std::runtime_error("random out of range");
-  }
+      throw std::runtime_error("random out of range");*/
+  std::vector<Point2D> catPath = generatePath(world);
+  return catPath.back();
+  
 }

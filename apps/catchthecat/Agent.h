@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <functional>
 #include <vector>
+#include <queue>
 
 // Point2D is now glm::ivec2 — same x,y interface, no OOP wrapper needed.
 using Point2D = glm::ivec2;
@@ -29,6 +30,8 @@ public:
   virtual Point2D Move(CatWorld*) = 0;
 
   std::vector<Point2D> generatePath(CatWorld* w);
+
+  //bool contains(queue<Point2D> q, Point2D target);
 };
 
 #endif  // AGENT_H

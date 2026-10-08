@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include "World.h"
 
+
 using namespace std;
 
 std::vector<Point2D> Agent::generatePath(CatWorld* w) {
@@ -30,16 +31,56 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
     // do this up to find a visitable border and break the loop
     Point2D current = {0, 0};
     current = frontier.front();
+    frontier.pop();
+    frontierSet.erase(current);
     visited.insert(pair(current, true));
-    vector<Point2D> neighbors;
-    for (int i = 0; i < neighbors.size(); i++)
+    vector<Point2D> neighbors = w->neighbors(current);
+    for (int i = 0; i < neighbors.size(); i++) 
     {
-
+      if (!w->isValidPosition(neighbors[i]) || !visited.contains(neighbors[i]) || frontierSet.contains(neighbors[i]) || catPos == neighbors[i]
+          || w->getContent(neighbors[i])) {
+        neighbors.erase(neighbors.begin() + i);
+      }
     }
+    for (int i = 0; i < neighbors.size(); i++) 
+    {
+      queue<Point2D> q = frontier;
+      bool onFrontier = false;
+      while (!q.empty()) {
+        if (q.front() == neighbors[i]) {
+          onFrontier = true;
+        }
+        q.pop();
+      }
+      cameFrom.insert(pair(current, neighbors[i]));
+      if (!onFrontier) {
+        frontier.push(neighbors[i]);
+      }
+      frontierSet.emplace(neighbors[i]);
+    }
+      
   }
 
   // if the border is not infinity, build the path from border to the cat using the camefrom map
   // if there isnt a reachable border, just return empty vector
   // if your vector is filled from the border to the cat, the first element is the catcher move, and the last element is the cat move
-  return vector<Point2D>();
+  if (w->getWorldSideSize() < 30)
+  {
+
+  } else {
+    return vector<Point2D>();
+  }
+  
 }
+
+ /* bool Agent::contains(queue<Point2D> q, Point2D target) {
+  while (!q.empty()) {
+    if (q.front() == target) {
+      return true;
+    }
+    q.pop();
+  }
+  return false;
+}
+*/
+
