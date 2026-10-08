@@ -18,7 +18,7 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   auto catPos = w->getCat();
   frontier.push(catPos);
   frontierSet.insert(catPos);
-  Point2D borderExit = {INT32_MAX, INT32_MAX};  // sentinel: no border found yet
+  std::optional<Point2D> borderExit;  // sentinel: no border found yet
 
   while (!frontier.empty()) {
     // get the current from frontier
@@ -66,7 +66,7 @@ std::vector<Point2D> Agent::generatePath(CatWorld* w) {
   // if your vector is filled from the border to the cat, the first element is the catcher move, and the last element is the cat move
   if (w->getWorldSideSize() < 30)
   {
-
+    return vector<Point2D>();
   } else {
     return vector<Point2D>();
   }

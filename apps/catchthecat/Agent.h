@@ -8,6 +8,12 @@
 
 // Point2D is now glm::ivec2 — same x,y interface, no OOP wrapper needed.
 using Point2D = glm::ivec2;
+namespace glm {
+  inline bool operator<(const glm::ivec2& a, const glm::ivec2& b) {
+    if (a.x != b.x) return a.x < b.x;
+    return a.y < b.y;
+  }
+}  // namespace glm
 
 // Hash specialization so Point2D (= glm::ivec2) works in unordered containers.
 namespace std {
