@@ -13,7 +13,8 @@ namespace glm {
     if (a.x != b.x) return a.x < b.x;
     return a.y < b.y;
   }
-}  // namespace glm
+}
+  // namespace glm
 
 // Hash specialization so Point2D (= glm::ivec2) works in unordered containers.
 namespace std {
